@@ -1,5 +1,5 @@
-streamlit
-rdkit
+streamlit>=1.49,<2
+rdkit>=2024.9,<2027
 numpy
-pandas
+pandas>=2.2,<4
 scikit-learn

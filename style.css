@@ -1,0 +1,15 @@
+/* Native Streamlit controls retain keyboard behavior and focus indicators. */
+.stApp { background: #faf8ff; color: #29213e; }
+.block-container { max-width: 1120px; padding-top: 4.5rem; padding-bottom: 2rem; }
+.lab-eyebrow { color: #675080; font-size: .8rem; letter-spacing: .12em; font-weight: 650; }
+h1 { color: #332347; letter-spacing: -.045em; }
+h2, h3 { color: #3e2d55; }
+[data-testid="stMetric"] { background: #f0eaf9; border-radius: 18px; padding: 1rem; }
+[data-testid="stMetricLabel"], [data-testid="stMetricValue"] { color: #39294d; }
+.stButton button, .stDownloadButton button { border-radius: 14px; min-height: 44px; }
+[data-testid="stTextInput"] input { border-radius: 12px; }
+[data-testid="stVerticalBlockBorderWrapper"] { border-radius: 22px; }
+button[data-baseweb="tab"] { min-height: 48px; }
+button:focus-visible, input:focus-visible { outline: 3px solid #7952b3 !important; outline-offset: 3px; }
+@media (max-width: 640px) { .block-container { padding: 4rem 1rem 1.5rem; } h1 { font-size: 2rem !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

@@ -1,147 +1,68 @@
-# 🧪 ChemML — Molecular Property Analyzer
+# 🧪 ChemML — Your little molecule lab
 
-An interactive cheminformatics application for visualizing molecules and calculating molecular properties from SMILES strings.
+A friendly Streamlit workbench for exploring molecular structures with RDKit.
 
-Built with **Python, RDKit, and Streamlit**, this project is designed as a foundation for integrating cheminformatics with machine learning for molecular property prediction.
+## What you can do
 
-## Features
+- Explore a molecule from SMILES or choose aspirin, caffeine, ethanol, or ibuprofen.
+- See its 2D structure, formula, canonical SMILES, and eight molecular descriptors.
+- Review a transparent Lipinski rule-of-five violation count.
+- Compare two molecules with side-by-side structures, properties, and Morgan/Tanimoto similarity.
+- Analyze a UTF-8 CSV of up to 500 molecules (2 MB), preserving invalid rows and input row numbers.
+- Download structures as PNG and results as CSV.
+- Use native keyboard-accessible controls, visible focus indicators, responsive layouts, and an in-app quick guide.
 
-- Enter molecules using SMILES notation
-- Generate 2D molecular structures with RDKit
-- Calculate molecular weight
-- Calculate LogP
-- Calculate hydrogen-bond donors
-- Calculate hydrogen-bond acceptors
-- Interactive web interface built with Streamlit
-- Foundation for future ML-based molecular property prediction
+## Run locally
 
-## Example
-
-Enter a SMILES string such as aspirin:
-
-```text
-CC(=O)OC1=CC=CC=C1C(=O)O
-```
-
-The application generates the molecular structure and calculates properties including:
-
-| Property | Description |
-|---|---|
-| Molecular Weight | Molecular mass calculated by RDKit |
-| LogP | Estimated octanol/water partition coefficient |
-| H-Bond Donors | Number of hydrogen-bond donor groups |
-| H-Bond Acceptors | Number of hydrogen-bond acceptor groups |
-
-## Tech Stack
-
-- Python
-- RDKit
-- Streamlit
-- NumPy
-- Pandas
-- scikit-learn
-- Jupyter
-
-## Project Structure
-
-```text
-chem-app/
-├── app.py
-├── Test-1.ipynb
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
-
-`app.py` contains the Streamlit application.
-
-`Test-1.ipynb` is used for cheminformatics and machine-learning experimentation.
-
-## Installation
-
-Clone the repository:
+Use Python 3.11 or newer. From this project directory:
 
 ```bash
-git clone <your-repository-url>
-cd chem-app
-```
-
-Create a Conda environment:
-
-```bash
-conda create -n chem-ml python=3.11
-conda activate chem-ml
-```
-
-Install the dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-## Running the Application
-
-Start the Streamlit application:
-
-```bash
+python -m venv .venv
+source .venv/bin/activate
+# Windows: .venv\Scripts\activate
+python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-Then open the local address displayed by Streamlit, typically port `8501`.
+Open the localhost URL printed by Streamlit. The `.streamlit/config.toml` theme is loaded when starting from this directory.
 
-## Machine Learning Roadmap
+## Tests
 
-The project will be expanded from molecular descriptor calculation into a molecular machine-learning platform.
-
-Planned features include:
-
-- Morgan molecular fingerprints
-- Lipinski Rule of Five analysis
-- Molecular similarity calculations
-- Molecular dataset upload and analysis
-- Descriptor generation for ML datasets
-- Exploratory data analysis
-- Molecular property prediction
-- Model training with scikit-learn
-- Random Forest and gradient-boosting models
-- Model performance visualization
-- Applicability-domain analysis
-- PyTorch-based molecular models
-- Graph neural networks
-
-Potential prediction targets include aqueous solubility, LogP, permeability, and other physicochemical or ADME-related molecular properties.
-
-## Scientific Purpose
-
-This project explores the intersection of **chemistry, cheminformatics, data science, and machine learning**.
-
-RDKit converts molecular structures into computational representations such as descriptors and fingerprints. These representations can subsequently be used as features for statistical and machine-learning models.
-
-A future workflow will follow:
-
-```text
-SMILES
-   ↓
-RDKit Molecular Structure
-   ↓
-Descriptors / Molecular Fingerprints
-   ↓
-Data Processing
-   ↓
-Machine Learning Model
-   ↓
-Molecular Property Prediction
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
 ```
+
+Tests cover known descriptors, invalid/empty inputs, equivalent SMILES similarity, mixed-validity batches, row limits, safe CSV exports, and the Streamlit example/validation flow.
+
+## Files
+
+- `app.py`: interactive UI and downloads
+- `chemistry.py`: shared RDKit calculations, validation, and export
+- `style.css` and `.streamlit/config.toml`: lavender theme
+- `tests/`: calculation and app regression checks
+- `molecular_analysis.ipynb`: original exploratory notebook
+
+## Scientific scope
+
+Descriptors are calculated from the supplied structure; they are not experimental measurements or trained ML predictions. No automatic salt removal, protonation adjustment, or tautomer standardization is performed. The rule-of-five count checks molecular weight >500, Crippen LogP >5, H-bond donors >5, and H-bond acceptors >10. It does not establish safety, efficacy, or absorption. Similarity uses radius-2, 2,048-bit Morgan fingerprints and the Tanimoto coefficient; matching fingerprints do not prove identical biological behavior.
+
+Calculations run on the hosting server. This app does not call an external chemistry API or persist uploaded files. On shared deployments, users must be allowed to send their data to that host. CSV exports neutralize leading spreadsheet-formula characters in text values.
 
 ## Author
 
-**Tish Huynh**
+**Tish Huynh** — M.S. Chemistry, University of Connecticut; B.A. Chemistry, Drexel University.
 
-M.S. Chemistry — University of Connecticut  
-B.A. Chemistry — Drexel University
+Future work: curated training data, evaluated property-prediction models, and applicability-domain analysis.
 
-Interests: cheminformatics, pharmaceutical development, analytical chemistry, process development, and machine learning.
+## Proton map and acidity references
 
-## Disclaimer
+Explore now lists every explicit or implicit hydrogen, with one-based atom IDs matching a labeled, downloadable structure. Choose a hydrogen to highlight its bond site and download all proton rows as CSV. For structures above 120 atoms including hydrogens, the diagram is omitted for readability; the full table remains available.
 
-This application is intended for educational, research, and software-development purposes. Computational predictions should not be interpreted as experimental measurements or medical advice.# ChemML-Molecular-Property-Analyzer
+`pka.py` matches conservative functional-group rules to the [Indiana University teaching chart](https://www.chem.indiana.edu/wp-content/uploads/2018/03/pka-chart.pdf). **These are family references, not molecule-specific pKa predictions, experimentally measured values for the submitted compound, or uncertainty intervals.** The chart does not specify a uniform solvent/temperature scale. Do not calculate equilibrium constants from these mixed teaching references.
+
+Supported families include carboxylic acid, phenol, alcohol, aliphatic thiol, amide, selected carbonyl-alpha C–H, terminal alkyne, simple neutral amine N–H, and limited hydrocarbon environments. Unsupported hydrogens remain visible as “Not estimated.” Charged/radical structures, isotope-specific acidity, and multiply activated sites deliberately abstain. Substituent and long-range electronic effects are not modeled; a matching functional group does not validate a compound-specific estimate. No tautomer enumeration, microstate coupling, stereotopic hydrogen resolution, or sequential deprotonation is performed. Hydrogens on one atom share a first-deprotonation family reference.
+
+Simple aliphatic amine proton acceptors have a separate conjugate-acid **pKaH** table; this is different from the acidity of an existing N–H bond. Other basic sites are outside the method. Atom IDs refer to the supplied SMILES after adding hydrogens and can change with alternative equivalent SMILES. CSV rows include method and source provenance.
+
+Acidity alone does not predict nucleophilicity, electrophilicity, radical reactivity, reaction rates or products. Assessing a reaction requires a partner, solvent, temperature and intended transformation. Use measured solvent-matched data or a validated pKa predictor for quantitative decisions.
