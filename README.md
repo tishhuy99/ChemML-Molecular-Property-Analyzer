@@ -12,6 +12,10 @@ A friendly Streamlit workbench for exploring molecular structures with RDKit.
 - Download structures as PNG and results as CSV.
 - Use native keyboard-accessible controls, visible focus indicators, responsive layouts, and an in-app quick guide.
 
+## Open the app online
+
+[Launch ChemML in Binder](https://mybinder.org/v2/gh/tishhuy99/ChemML-Molecular-Property-Analyzer/main?urlpath=proxy%2F8501%2F) — a public, no-login launch of this Python app. The first start can take several minutes while Binder builds the environment. Sessions are temporary and may be unavailable when the free service is busy; work and uploads are not saved between sessions. For a reliable always-on link, a dedicated app host is needed.
+
 ## Run locally
 
 Use Python 3.11 or newer. From this project directory:

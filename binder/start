@@ -1,0 +1,4 @@
+#!/bin/bash
+# Start the Streamlit server alongside Binder's Jupyter server.
+python -m streamlit run app.py --server.address 0.0.0.0 --server.port 8501 --server.headless true > /tmp/chemml-streamlit.log 2>&1 &
+exec "$@"
